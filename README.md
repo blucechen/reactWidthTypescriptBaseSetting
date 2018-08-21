@@ -14,6 +14,5 @@
 - less
 - google map
 
-## 暴露eject
-> 如果想搭建基于 rewire解决方案的请切换另一条分支
-
+## 不暴露eject
+> 如果想搭建基于 eject 解决方案的请切换另一条分支
