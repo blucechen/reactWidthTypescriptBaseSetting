@@ -17,3 +17,7 @@
 ## 暴露eject
 > 如果想搭建基于 rewire解决方案的请切换另一条分支
 
+
+## TypeScript-Handbook
+增加两本ts参考手册，资源来源于github上[zhongsp/TypeScript](https://github.com/zhongsp/TypeScript) 和 [ypeScript-Handbook](https://github.com/MyErpSoft/TypeScript-Handbook),表示感谢！
+
