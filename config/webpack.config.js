@@ -42,6 +42,7 @@ const cssRegex = /\.css$/;
 const cssModuleRegex = /\.module\.css$/;
 const sassRegex = /\.(scss|sass)$/;
 const sassModuleRegex = /\.module\.(scss|sass)$/;
+const lessRegex = /\.less$/;
 
 // This is the production and development configuration.
 // It is focused on developer experience, fast rebuilds, and a minimal bundle.
@@ -107,12 +108,27 @@ module.exports = function(webpackEnv) {
       },
     ].filter(Boolean);
     if (preProcessor) {
-      loaders.push({
-        loader: require.resolve(preProcessor),
-        options: {
-          sourceMap: isEnvProduction && shouldUseSourceMap,
-        },
-      });
+      if(preProcessor.indexOf('less') > -1) {
+        loaders.push({
+          loader: require.resolve(preProcessor),
+          options: {
+            sourceMap: isEnvProduction && shouldUseSourceMap,
+            javascriptEnabled: true,  // 允许js行内样式
+            modifyVars: { //修改antd 中的主题
+              // 'primary-color': 'yellow',
+              // 'link-color': 'yellow',
+            }
+          },
+        });
+      } else {
+        loaders.push({
+          loader: require.resolve(preProcessor),
+          options: {
+            sourceMap: isEnvProduction && shouldUseSourceMap,
+            javascriptEnabled: true
+          },
+        });
+      }
     }
     return loaders;
   };
@@ -139,6 +155,7 @@ module.exports = function(webpackEnv) {
       // the line below with these two lines if you prefer the stock client:
       // require.resolve('webpack-dev-server/client') + '?/',
       // require.resolve('webpack/hot/dev-server'),
+      // 'react-hot-loader/patch',
       isEnvDevelopment &&
         require.resolve('react-dev-utils/webpackHotDevClient'),
       // Finally, this is your app's code:
@@ -353,6 +370,14 @@ module.exports = function(webpackEnv) {
                       },
                     },
                   ],
+                  [
+                    require.resolve('babel-plugin-import'),// 导入 import 插件
+                    {
+                      libraryName: 'antd',   //暴露antd
+                      style: true
+                    }
+                  ],
+                  'react-hot-loader/babel',// 以支持热重载
                 ],
                 // This is a feature of `babel-loader` for webpack (not Babel itself).
                 // It enables caching results in ./node_modules/.cache/babel-loader/
@@ -450,6 +475,16 @@ module.exports = function(webpackEnv) {
                   getLocalIdent: getCSSModuleLocalIdent,
                 },
                 'sass-loader'
+              ),
+            },
+            {
+              test: lessRegex,
+              use: getStyleLoaders(
+                {
+                  importLoaders: 2,
+                  sourceMap: isEnvProduction && shouldUseSourceMap,
+                },
+                'less-loader'
               ),
             },
             // "file" loader makes sure those assets get served by WebpackDevServer.

@@ -1,0 +1,1 @@
+:global(.bgRed){background-color:#f00}:global .link{color:green}:global .box{color:yellow}.bgRed{background-color:blue}.bgRed.aa{font-size:30px}

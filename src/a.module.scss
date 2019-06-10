@@ -1,0 +1,21 @@
+
+
+:global(.bgRed) {
+  background-color: #f00;
+}
+:global {
+  .link {
+    color: green;
+  }
+  .box {
+    color: yellow;
+  }
+}
+// 默认是local
+.bgRed {
+  background-color: blue;
+  &.aa {
+    font-size: 30px;
+  }
+}
+
